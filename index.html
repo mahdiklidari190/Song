@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>هدر موزیک</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      font-family: sans-serif;
+      direction: rtl;
+      color: white;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      gap: 10px;
+      background-color: #111;
+    }
+
+    .profile-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: none;
+      cursor: pointer;
+    }
+
+    .profile-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .icon-btn {
+      font-size: 20px;
+      background: none;
+      border: none;
+      color: silver;
+      cursor: pointer;
+    }
+
+    .icon-btn.active {
+      color: yellow;
+    }
+
+    .search-box {
+      flex: 1;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      background-color: #222;
+      color: white;
+    }
+
+    .tab-btn {
+      padding: 8px 12px;
+      border: none;
+      cursor: pointer;
+      color: white;
+      background-color: black;
+      border-radius: 5px;
+    }
+
+    .tab-btn.podcast-selected {
+      background-color: blue;
+    }
+
+    .tab-btn.music-selected {
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React & Babel CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- React Code -->
+  <script type="text/babel">
+    function Header() {
+      const [notificationActive, setNotificationActive] = React.useState(false);
+      const [selectedTab, setSelectedTab] = React.useState('music');
+
+      return (
+        <header className="header">
+          <button className="profile-btn" onClick={() => alert("رفتن به پروفایل")}>
+            <img src="https://via.placeholder.com/40" alt="پروفایل" />
+          </button>
+
+          <button
+            className={`icon-btn ${notificationActive ? 'active' : ''}`}
+            onClick={() => setNotificationActive(!notificationActive)}
+          >
+            🔔
+          </button>
+
+          <button className="icon-btn" onClick={() => alert("خرید اکانت پریمیوم")}>
+            💎
+          </button>
+
+          <input type="text" className="search-box" placeholder="جستجوی آهنگ..." />
+
+          <button
+            className={`tab-btn ${selectedTab === 'podcast' ? 'podcast-selected' : ''}`}
+            onClick={() => setSelectedTab('podcast')}
+          >
+            پادکست
+          </button>
+
+          <button
+            className={`tab-btn ${selectedTab === 'music' ? 'music-selected' : ''}`}
+            onClick={() => setSelectedTab('music')}
+          >
+            آهنگ
+          </button>
+        </header>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<Header />);
+  </script>
+</body>
+</html>
