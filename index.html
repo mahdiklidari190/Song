@@ -2,131 +2,150 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>هدر موزیک</title>
+  <title>ریتما - پلتفرم موزیک</title>
   <style>
     body {
       margin: 0;
-      background-color: #111;
       font-family: sans-serif;
+      background-color: #111;
+      color: white;
       direction: rtl;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      flex: 1;
+    }
+
+    .sidebar {
+      width: 200px;
+      background-color: #1a1a1a;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .sidebar a {
+      color: silver;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+
+    .sidebar a:hover {
       color: white;
     }
 
-    .header {
+    .main {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .album-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 15px;
+    }
+
+    .album {
+      background-color: #222;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .album img {
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    .player {
+      background-color: #000;
+      padding: 10px 20px;
       display: flex;
       align-items: center;
-      padding: 10px 20px;
+      justify-content: space-between;
+    }
+
+    .player .controls {
+      display: flex;
       gap: 10px;
-      background-color: #111;
+      align-items: center;
     }
 
-    .profile-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: none;
-      cursor: pointer;
-    }
-
-    .profile-btn img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .icon-btn {
-      font-size: 20px;
-      background: none;
-      border: none;
-      color: silver;
-      cursor: pointer;
-    }
-
-    .icon-btn.active {
-      color: yellow;
-    }
-
-    .search-box {
+    .player .progress {
       flex: 1;
-      padding: 8px;
-      border-radius: 5px;
-      border: none;
-      background-color: #222;
-      color: white;
+      margin: 0 20px;
+      height: 5px;
+      background-color: #333;
+      border-radius: 3px;
+      position: relative;
     }
 
-    .tab-btn {
-      padding: 8px 12px;
-      border: none;
-      cursor: pointer;
-      color: white;
-      background-color: black;
-      border-radius: 5px;
-    }
-
-    .tab-btn.podcast-selected {
-      background-color: blue;
-    }
-
-    .tab-btn.music-selected {
+    .player .progress::after {
+      content: '';
+      position: absolute;
+      left: 30%;
+      top: 0;
+      height: 100%;
+      width: 30%;
       background-color: red;
+      border-radius: 3px;
     }
   </style>
 </head>
 <body>
-  <div id="root"></div>
+  <div class="container">
+    <nav class="sidebar">
+      <a href="#">خانه</a>
+      <a href="#">جستجو</a>
+      <a href="#">کتابخانه شما</a>
+      <a href="#">لیست پخش‌ها</a>
+      <a href="#">آلبوم‌ها</a>
+      <a href="#">آهنگ‌ها</a>
+      <a href="#">هنرمندان</a>
+      <a href="#">ایستگاه‌ها</a>
+      <a href="#">ویدیوها</a>
+      <a href="#">پادکست‌ها</a>
+      <a href="#">تنظیمات</a>
+    </nav>
 
-  <!-- React & Babel CDN -->
-  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <main class="main">
+      <h2>آلبوم‌های ویژه</h2>
+      <div class="album-grid">
+        <div class="album">
+          <img src="https://via.placeholder.com/120x120?text=Tehran" alt="Tehran" />
+          <p>تهران</p>
+        </div>
+        <div class="album">
+          <img src="https://via.placeholder.com/120x120?text=LEITO" alt="LEITO" />
+          <p>LEITO</p>
+        </div>
+        <div class="album">
+          <img src="https://via.placeholder.com/120x120?text=YAS" alt="YAS" />
+          <p>یاس</p>
+        </div>
+        <div class="album">
+          <img src="https://via.placeholder.com/120x120?text=SASY" alt="SASY" />
+          <p>SASY</p>
+        </div>
+      </div>
+    </main>
+  </div>
 
-  <!-- React Code -->
-  <script type="text/babel">
-    function Header() {
-      const [notificationActive, setNotificationActive] = React.useState(false);
-      const [selectedTab, setSelectedTab] = React.useState('music');
-
-      return (
-        <header className="header">
-          <button className="profile-btn" onClick={() => alert("رفتن به پروفایل")}>
-            <img src="https://via.placeholder.com/40" alt="پروفایل" />
-          </button>
-
-          <button
-            className={`icon-btn ${notificationActive ? 'active' : ''}`}
-            onClick={() => setNotificationActive(!notificationActive)}
-          >
-            🔔
-          </button>
-
-          <button className="icon-btn" onClick={() => alert("خرید اکانت پریمیوم")}>
-            💎
-          </button>
-
-          <input type="text" className="search-box" placeholder="جستجوی آهنگ..." />
-
-          <button
-            className={`tab-btn ${selectedTab === 'podcast' ? 'podcast-selected' : ''}`}
-            onClick={() => setSelectedTab('podcast')}
-          >
-            پادکست
-          </button>
-
-          <button
-            className={`tab-btn ${selectedTab === 'music' ? 'music-selected' : ''}`}
-            onClick={() => setSelectedTab('music')}
-          >
-            آهنگ
-          </button>
-        </header>
-      );
-    }
-
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<Header />);
-  </script>
+  <footer class="player">
+    <div class="controls">
+      <button>⏮️</button>
+      <button>▶️</button>
+      <button>⏭️</button>
+    </div>
+    <div class="progress"></div>
+    <div>تهران - یاس</div>
+  </footer>
 </body>
 </html>
