@@ -1,409 +1,380 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحه اصلی - سایت آهنگ</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <title>Modern Site Header</title>
     <style>
+        /* Modern CSS: Using CSS Grid/Flexbox, Variables, Glassmorphism, Smooth Animations */
+        :root {
+            --primary-red: #ef4444;
+            --primary-blue: #3b82f6;
+            --bg-color: #0f0f0f; /* Dark theme for modern feel */
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --text-color: #ffffff;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #000;
-            color: #fff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: filter var(--transition);
         }
-        .header {
-            background: linear-gradient(135deg, #ff0080 0%, #000 100%);
-            padding: 1rem 2rem;
+
+        body.menu-open {
+            filter: blur(4px);
+        }
+
+        header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            position: relative;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
             z-index: 1000;
         }
+
         .left-section {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
+
         .profile-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-        .profile-img {
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-        }
-        .notification-btn, .gem-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: white;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
             cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: background 0.3s;
-            position: relative;
-        }
-        .gem-btn {
-            background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
-            color: #000;
-            font-size: 1.2rem;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        .notification-btn:hover, .gem-btn:hover {
-            opacity: 0.8;
-        }
-        .notification-badge {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: red;
-            color: white;
-            border-radius: 50%;
-            width: 1rem;
-            height: 1rem;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .search-section {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex: 1;
-            max-width: 600px;
-            margin: 0 2rem;
-            background: #333;
-            border-radius: 20px;
-            padding: 0.5rem 1rem;
-        }
-        .search-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #fff;
-            font-size: 1rem;
-        }
-        .search-input::placeholder {
-            color: #aaa;
-        }
-        .tab-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-        .tab-btn {
-            padding: 0.5rem 1.5rem;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            font-size: 1rem;
-        }
-        .active-song {
-            background: #ff1493;
-            color: white;
-        }
-        .active-podcast {
-            background: transparent;
-            color: white;
-            border: 1px solid white;
-        }
-        .inactive {
-            background: transparent;
-            color: white;
-        }
-        .menu-btn {
-            background: #ff1493;
-            border: none;
-            color: white;
-            cursor: pointer;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-        .sidebar {
-            position: fixed;
-            top: 0;
-            right: -33vw;
-            width: 33vw;
-            height: 100vh;
-            background: #000;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.5);
-            transition: right 0.3s ease;
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            padding: 1rem;
-        }
-        .sidebar.open {
-            right: 0;
-        }
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid #333;
-        }
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #fff;
-        }
-        .menu-items {
-            list-style: none;
-            padding: 1rem 0;
-            flex: 1;
-        }
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            cursor: pointer;
-            transition: background 0.3s;
-            position: relative;
-        }
-        .menu-item:hover {
-            background: #111;
-        }
-        .menu-item.active::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 5px;
-            height: 100%;
-            background: #ff1493;
-        }
-        .menu-icon {
-            margin-left: 1rem;
-            font-size: 1.2rem;
-            color: #ff1493;
-        }
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            padding: 1rem 0;
-            border-top: 1px solid #333;
-        }
-        .social-icon {
-            font-size: 1.5rem;
-            color: #fff;
-            cursor: pointer;
-        }
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-            display: none;
-            z-index: 1500;
-        }
-        .overlay.open {
-            display: block;
-        }
-        .main {
-            padding: 2rem;
-            min-height: calc(100vh - 80px);
-            background: #000;
-        }
-        .home-content, .podcast-content {
-            display: none;
-        }
-        .home-content.active, .podcast-content.active {
-            display: block;
-        }
-        .content-placeholder {
-            text-align: center;
-            padding: 2rem;
-            background: #111;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            transition: var(--transition);
+            background: url('https://via.placeholder.com/40?text=User') center/cover no-repeat;
         }
 
-        /* Responsive Design */
+        .profile-btn:hover {
+            transform: scale(1.05);
+            border-color: var(--text-color);
+        }
+
+        .notification-btn, .subscription-btn, .menu-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: var(--card-bg);
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .notification-btn:hover, .subscription-btn:hover, .menu-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* Bell Icon */
+        .notification-btn::before {
+            content: '🔔';
+            font-size: 1.2rem;
+        }
+
+        /* Diamond Shape for Subscription */
+        .subscription-btn {
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            border-radius: 0;
+            width: 30px;
+            height: 30px;
+            font-size: 0.8rem;
+        }
+
+        .subscription-btn::before {
+            content: '💎';
+            clip-path: none;
+        }
+
+        .search-section {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 2rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--text-color);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        .right-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .toggle-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        .toggle-btn.active {
+            background: var(--primary-red); /* Red for Song */
+        }
+
+        .toggle-btn.active.podcast {
+            background: var(--primary-blue); /* Blue for Podcast */
+        }
+
+        .toggle-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hamburger Menu */
+        .menu-btn {
+            flex-direction: column;
+            gap: 3px;
+            border-radius: 4px;
+        }
+
+        .menu-btn span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .menu-open .menu-btn span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .menu-open .menu-btn span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-open .menu-btn span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Side Menu */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -33.33vw; /* 1/3 of viewport */
+            width: 33.33vw;
+            height: 100vh;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            transition: right var(--transition);
+            z-index: 1001;
+            padding: 2rem;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .side-menu.open {
+            right: 0;
+        }
+
+        .close-btn {
+            align-self: flex-end;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 2rem;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            color: var(--primary-red);
+            transform: rotate(90deg);
+        }
+
+        .menu-item {
+            display: block;
+            padding: 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--transition);
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-5px);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .header {
-                flex-direction: row;
-                padding: 0.5rem 1rem;
-                gap: 0.5rem;
+            .side-menu {
+                width: 100vw;
+                right: -100vw;
             }
-            .left-section {
-                gap: 0.5rem;
-            }
-            .search-section {
-                flex: 1;
-                margin: 0 1rem;
-                padding: 0.3rem 0.8rem;
-            }
-            .tab-buttons {
-                display: none; /* مخفی در موبایل اگر لازم */
-            }
-            .menu-btn {
-                padding: 0.3rem 1rem;
-            }
-            .sidebar {
-                width: 80vw;
-                right: -80vw;
-            }
-            .sidebar.open {
+
+            .side-menu.open {
                 right: 0;
             }
+
+            header {
+                padding: 1rem;
+            }
+
+            .search-section {
+                margin: 0 1rem;
+                max-width: 200px;
+            }
+        }
+
+        /* Main Content Placeholder */
+        main {
+            padding: 2rem;
+            color: var(--text-color);
+            transition: filter var(--transition);
+        }
+
+        main.menu-open {
+            filter: blur(4px);
         }
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <header>
+        <div class="left-section">
+            <button class="profile-btn" onclick="openProfile()"></button>
+            <button class="notification-btn" onclick="showNotification()"></button>
+            <button class="subscription-btn" onclick="openSubscription()"></button>
+        </div>
 
-    <script type="text/babel">
-        const { useState } = React;
+        <div class="search-section">
+            <input type="text" class="search-input" placeholder="Search...">
+        </div>
 
-        function App() {
-            const [activeTab, setActiveTab] = useState('songs');
-            const [sidebarOpen, setSidebarOpen] = useState(false);
-            const [notificationCount, setNotificationCount] = useState(0);
-            const [activeMenu, setActiveMenu] = useState('home');
+        <div class="right-section">
+            <button class="toggle-btn active" id="songBtn" onclick="toggleMode('song')">Song</button>
+            <button class="toggle-btn podcast" id="podcastBtn" onclick="toggleMode('podcast')">Podcast</button>
+            <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
 
-            const openUserPanel = () => {
-                alert('باز کردن پنل کاربری');
-            };
+    <div class="side-menu" id="sideMenu">
+        <button class="close-btn" onclick="toggleMenu()">&times;</button>
+        <a href="#" class="menu-item" onclick="goHome()">Home</a>
+        <a href="#" class="menu-item" onclick="openProfile()">Profile</a>
+        <a href="#" class="menu-item" onclick="openSubscription()">Purchase Subscription</a>
+    </div>
 
-            const toggleNotifications = () => {
-                alert('نوتیفیکیشن‌ها: بروزرسانی آهنگ‌های جدید');
-                setNotificationCount(0);
-            };
+    <main>
+        <h1>Welcome to the Song Page (Default)</h1>
+        <p>This is a placeholder for your content. Default mode: Song (red active).</p>
+    </main>
 
-            const openSubscription = () => {
-                alert('باز کردن صفحه خرید اشتراک');
-            };
+    <script>
+        // Default: Song active
+        document.getElementById('songBtn').classList.add('active');
 
-            const switchToSongs = () => {
-                setActiveTab('songs');
-            };
+        function toggleMode(mode) {
+            const songBtn = document.getElementById('songBtn');
+            const podcastBtn = document.getElementById('podcastBtn');
 
-            const switchToPodcasts = () => {
-                setActiveTab('podcasts');
-            };
+            // Reset both
+            songBtn.classList.remove('active');
+            podcastBtn.classList.remove('active');
 
-            const toggleSidebar = () => {
-                setSidebarOpen(!sidebarOpen);
-            };
-
-            const closeSidebar = () => {
-                setSidebarOpen(false);
-            };
-
-            const selectMenu = (item) => {
-                setActiveMenu(item);
-                // منطق برای تغییر صفحه اگر لازم
-                closeSidebar();
-            };
-
-            return (
-                <div className="app">
-                    <header className="header">
-                        <div className="left-section">
-                            <button className="profile-btn" onClick={openUserPanel}>
-                                <img src="https://via.placeholder.com/30?text=P" alt="پروفایل" className="profile-img" /> {/* جایگزین با عکس واقعی */}
-                            </button>
-                            <button className="notification-btn" onClick={toggleNotifications}>
-                                <i className="fas fa-bell"></i>
-                                {notificationCount > 0 && <span className="notification-badge">{notificationCount}</span>}
-                            </button>
-                            <button className="gem-btn" onClick={openSubscription}>
-                                <i className="fas fa-diamond"></i>
-                            </button>
-                        </div>
-                        <div className="search-section">
-                            <input type="text" className="search-input" placeholder="جستجوی آهنگ‌ها، پادکست‌ها و هنرمندان" />
-                        </div>
-                        <div className="tab-buttons">
-                            <button
-                                className={`tab-btn ${activeTab === 'podcasts' ? 'active-podcast' : 'inactive'}`}
-                                onClick={switchToPodcasts}
-                            >
-                                پادکست
-                            </button>
-                            <button className="menu-btn" onClick={toggleSidebar}>
-                                موسیقی
-                            </button>
-                        </div>
-                    </header>
-
-                    <div className={`overlay ${sidebarOpen ? 'open' : ''}`} onClick={closeSidebar}></div>
-                    <nav className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-                        <div className="sidebar-header">
-                            <h3 style={{color: '#ff1493'}}>خانه</h3>
-                            <button className="close-btn" onClick={closeSidebar}>
-                                <i className="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <ul className="menu-items">
-                            <li className={`menu-item ${activeMenu === 'profile' ? 'active' : ''}`} onClick={() => selectMenu('profile')}>
-                                <span className="menu-icon"><i className="fas fa-user"></i></span>
-                                پروفایل
-                            </li>
-                            <li className={`menu-item ${activeMenu === 'songs' ? 'active' : ''}`} onClick={() => selectMenu('songs')}>
-                                <span className="menu-icon"><i className="fas fa-music"></i></span>
-                                آهنگ
-                            </li>
-                            <li className={`menu-item ${activeMenu === 'podcasts' ? 'active' : ''}`} onClick={() => selectMenu('podcasts')}>
-                                <span className="menu-icon"><i className="fas fa-podcast"></i></span>
-                                پادکست
-                            </li>
-                            {/* اضافه کردن آیتم‌های بیشتر اگر لازم */}
-                        </ul>
-                        <div className="social-icons">
-                            <i className="fab fa-instagram social-icon"></i>
-                            <i className="fab fa-tiktok social-icon"></i>
-                            <i className="fab fa-twitter social-icon"></i> {/* X as twitter */}
-                            <i className="fab fa-facebook social-icon"></i>
-                        </div>
-                    </nav>
-
-                    <main className="main">
-                        <div className={`home-content ${activeTab === 'songs' ? 'active' : ''}`}>
-                            <div className="content-placeholder">
-                                <h2>صفحه اصلی - آهنگ‌ها</h2>
-                                <p>اینجا لیست آهنگ‌های محبوب نمایش داده می‌شه. (قدم بعدی: اضافه کردن لیست واقعی)</p>
-                            </div>
-                        </div>
-                        <div className={`podcast-content ${activeTab === 'podcasts' ? 'active' : ''}`}>
-                            <div className="content-placeholder">
-                                <h2>صفحه پادکست</h2>
-                                <p>اینجا لیست پادکست‌ها نمایش داده می‌شه.</p>
-                            </div>
-                        </div>
-                    </main>
-                </div>
-            );
+            // Activate selected
+            if (mode === 'song') {
+                songBtn.classList.add('active');
+                document.querySelector('main h1').textContent = 'Welcome to the Song Page';
+            } else {
+                podcastBtn.classList.add('active', 'podcast'); // 'podcast' class for blue bg
+                document.querySelector('main h1').textContent = 'Welcome to the Podcast Page';
+            }
         }
 
-        ReactDOM.render(<App />, document.getElementById('root'));
+        function toggleMenu() {
+            const menu = document.getElementById('sideMenu');
+            const body = document.body;
+            const btn = document.getElementById('menuBtn');
+
+            menu.classList.toggle('open');
+            body.classList.toggle('menu-open');
+            btn.classList.toggle('menu-open');
+        }
+
+        function openProfile() {
+            alert('Opening Profile Page');
+        }
+
+        function showNotification() {
+            alert('New content added! Check notifications.');
+        }
+
+        function openSubscription() {
+            alert('Opening Subscription Purchase Page');
+        }
+
+        function goHome() {
+            toggleMode('song'); // Default to song
+            toggleMenu();
+        }
+
+        // Close menu on outside click
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('sideMenu');
+            const btn = document.getElementById('menuBtn');
+            if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                toggleMenu();
+            }
+        });
     </script>
 </body>
 </html>
