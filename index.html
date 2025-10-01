@@ -15,6 +15,7 @@
             --border-color: rgba(255, 255, 255, 0.1);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --active-bg: rgba(59, 130, 246, 0.3); /* Blue glow for active */
         }
 
         * {
@@ -245,18 +246,26 @@
             padding: 1rem 1.5rem;
             color: var(--text-color);
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 12px; /* Rounded rectangle */
             transition: var(--transition);
             margin-bottom: 1rem;
-            text-align: left;
+            text-align: right; /* Align text to right side of panel */
             font-size: 1.1rem;
             border: 1px solid transparent;
+            position: relative;
+            background: transparent;
         }
 
         .menu-item:hover {
             background: rgba(255, 255, 255, 0.1);
             border-color: var(--border-color);
             transform: translateX(-5px);
+        }
+
+        .menu-item.active {
+            background: var(--active-bg); /* Active background glow */
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); /* Glow effect behind button */
         }
 
         /* Enhanced Responsive */
@@ -310,6 +319,10 @@
                     justify-content: flex-end;
                     flex: 1;
                 }
+
+                .menu-item {
+                    text-align: center; /* Center on very small screens for better UX */
+                }
             }
         }
 
@@ -347,9 +360,9 @@
 
     <div class="side-menu" id="sideMenu">
         <button class="close-btn" onclick="toggleMenu()">&times;</button>
-        <a href="#" class="menu-item" onclick="goHome()">Home</a>
-        <a href="#" class="menu-item" onclick="openProfile()">Profile</a>
-        <a href="#" class="menu-item" onclick="openSubscription()">Purchase Subscription</a>
+        <a href="#" class="menu-item active" id="homeItem" onclick="setActive('home'); goHome();">Home</a>
+        <a href="#" class="menu-item" id="profileItem" onclick="setActive('profile'); openProfile();">Profile</a>
+        <a href="#" class="menu-item" id="subscriptionItem" onclick="setActive('subscription'); openSubscription();">Purchase Subscription</a>
     </div>
 
     <main id="mainContent">
@@ -358,8 +371,16 @@
     </main>
 
     <script>
-        // Default: Song active
+        // Default: Song active and Home active in menu
         document.getElementById('songBtn').classList.add('active');
+        document.getElementById('homeItem').classList.add('active');
+
+        function setActive(menuId) {
+            // Remove active from all menu items
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            // Add active to selected
+            document.getElementById(menuId + 'Item').classList.add('active');
+        }
 
         function toggleMode(mode) {
             const songBtn = document.getElementById('songBtn');
