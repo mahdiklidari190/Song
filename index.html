@@ -4,18 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modern Dark Site Header</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Enhanced Dark Theme with Targeted Blur */
+        /* Enhanced Dark Theme with CSS Variables */
         :root {
             --primary-red: #ef4444;
             --primary-blue: #3b82f6;
-            --bg-color: #0f0f0f; /* Deep dark */
-            --card-bg: rgba(15, 15, 15, 0.95); /* Darker, more opaque for panel */
+            --primary-purple: #8b5cf6;
+            --bg-color: #0f0f0f;
+            --card-bg: rgba(15, 15, 15, 0.95);
             --text-color: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
             --border-color: rgba(255, 255, 255, 0.1);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --active-bg: rgba(59, 130, 246, 0.3); /* Blue glow for active */
+            --active-bg: rgba(59, 130, 246, 0.3);
+            --gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
         }
 
         * {
@@ -26,18 +30,13 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* Dark gradient */
+            background: var(--gradient);
             min-height: 100vh;
             color: var(--text-color);
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-x: hidden;
         }
 
-        /* No blur on body - target specific elements */
-        header.menu-open, main.menu-open {
-            filter: blur(4px); /* Blur only header and main behind the panel */
-            transition: filter var(--transition);
-        }
-
+        /* Header Styles */
         header {
             display: flex;
             align-items: center;
@@ -50,14 +49,14 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            transition: filter var(--transition);
-            flex-wrap: nowrap; /* Keep in one row */
+            transition: var(--transition);
         }
 
         .left-section {
             display: flex;
             align-items: center;
             gap: 1rem;
+            flex-shrink: 0;
         }
 
         .profile-btn {
@@ -68,7 +67,12 @@
             border: 2px solid var(--border-color);
             cursor: pointer;
             transition: var(--transition);
-            background: url('https://via.placeholder.com/40?text=User') center/cover no-repeat;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
         }
 
         .profile-btn:hover {
@@ -76,7 +80,7 @@
             border-color: var(--text-color);
         }
 
-        .notification-btn, .subscription-btn, .menu-btn {
+        .icon-btn {
             width: 40px;
             height: 40px;
             border: none;
@@ -89,103 +93,119 @@
             justify-content: center;
             transition: var(--transition);
             border: 1px solid var(--border-color);
+            position: relative;
         }
 
-        .notification-btn:hover, .subscription-btn:hover, .menu-btn:hover {
+        .icon-btn:hover {
             background: rgba(255, 255, 255, 0.1);
             transform: scale(1.05);
         }
 
-        /* Bell Icon */
-        .notification-btn::before {
-            content: '🔔';
-            font-size: 1.2rem;
+        .notification-btn::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-red);
         }
 
-        /* Diamond Shape for Subscription */
-        .subscription-btn {
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-            border-radius: 0;
-            width: 30px;
-            height: 30px;
-            font-size: 0.8rem;
-        }
-
-        .subscription-btn::before {
-            content: '💎';
-            clip-path: none;
-        }
-
+        /* Search Section */
         .search-section {
             flex: 1;
-            max-width: 400px;
+            max-width: 500px;
             margin: 0 2rem;
             position: relative;
-            min-width: 150px; /* Minimum width for mobile */
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
         }
 
         .search-input {
             width: 100%;
-            padding: 0.75rem 1rem;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
             border: 1px solid var(--border-color);
             border-radius: 25px;
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-color);
             font-size: 1rem;
             transition: var(--transition);
         }
 
         .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--text-secondary);
         }
 
         .search-input:focus {
             outline: none;
-            border-color: var(--text-color);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background: rgba(255, 255, 255, 0.08);
         }
 
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        /* Right Section */
         .right-section {
             display: flex;
             align-items: center;
             gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        .toggle-container {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px;
+            padding: 4px;
+            border: 1px solid var(--border-color);
         }
 
         .toggle-btn {
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1.25rem;
             border: none;
-            border-radius: 25px;
+            border-radius: 20px;
             color: var(--text-color);
             cursor: pointer;
             transition: var(--transition);
             font-weight: 500;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            white-space: nowrap; /* Prevent text wrap */
+            background: transparent;
+            white-space: nowrap;
         }
 
         .toggle-btn:focus {
-            outline: none !important; /* Force remove outline */
-            box-shadow: none !important; /* Remove any focus ring/shadow */
+            outline: none;
         }
 
         .toggle-btn.active {
-            background: var(--primary-red); /* Red for Song */
+            background: var(--primary-red);
+            box-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
         }
 
         .toggle-btn.active.podcast {
-            background: var(--primary-blue); /* Blue for Podcast */
+            background: var(--primary-blue);
+            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
         }
 
         .toggle-btn:hover:not(.active) {
             background: rgba(255, 255, 255, 0.1);
         }
 
-        /* Hamburger Menu */
+        /* Menu Button */
         .menu-btn {
             flex-direction: column;
-            gap: 3px;
-            border-radius: 4px;
+            gap: 4px;
+            border-radius: 6px;
         }
 
         .menu-btn span {
@@ -208,198 +228,107 @@
             transform: rotate(-45deg) translate(7px, -6px);
         }
 
-        /* Side Menu Panel: No blur on panel itself */
+        /* Side Menu */
         .side-menu {
             position: fixed;
             top: 0;
-            right: -33.33vw; /* Start off-screen right, 1/3 width */
-            width: 33.33vw; /* 1/3 width for desktop */
+            right: -100%;
+            width: 100%;
+            max-width: 400px;
             height: 100vh;
-            background: var(--card-bg); /* Dark panel */
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             border-left: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            transition: right var(--transition); /* Smooth slide from right to left */
+            transition: right var(--transition);
             z-index: 1001;
             padding: 2rem;
-            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7); /* Stronger shadow for panel */
-            overflow-y: auto; /* Scroll if needed */
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
+            overflow-y: auto;
         }
 
         .side-menu.open {
-            right: 0; /* Slide in to visible (1/3) */
+            right: 0;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .close-btn {
-            align-self: flex-start; /* Align to left side of panel */
             background: none;
             border: none;
             color: var(--text-color);
-            font-size: 2rem;
+            font-size: 1.5rem;
             cursor: pointer;
-            margin-bottom: 2rem;
             transition: var(--transition);
             padding: 0.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
         .close-btn:hover {
-            color: var(--primary-red);
+            background: rgba(255, 255, 255, 0.1);
             transform: rotate(90deg);
         }
 
+        .menu-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
         .menu-item {
-            display: block;
-            padding: 0.75rem 1rem; /* Smaller padding for compact size */
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.25rem;
             color: var(--text-color);
             text-decoration: none;
-            border-radius: 12px; /* Rounded rectangle */
+            border-radius: 12px;
             transition: var(--transition);
-            margin-bottom: 0.5rem; /* Less margin for uniformity */
-            text-align: right; /* Align text to right side of panel */
-            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
             border: 1px solid transparent;
             position: relative;
             background: transparent;
-            width: 100%; /* Full width for uniform size */
-            min-height: 50px; /* Uniform height for all buttons */
-            display: flex;
-            align-items: center;
-            justify-content: flex-end; /* Align content to right */
+        }
+
+        .menu-item i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
         }
 
         .menu-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             border-color: var(--border-color);
-            transform: translateX(-5px);
+            transform: translateX(5px);
         }
 
         .menu-item.active {
-            background: var(--active-bg); /* Active background glow */
+            background: var(--active-bg);
             border-color: var(--primary-blue);
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); /* Glow effect behind button */
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
         }
 
-        /* Enhanced Responsive: Keep row layout, scale down for mobile */
-        @media (max-width: 1024px) { /* Tablet */
-            header {
-                padding: 1rem 1.5rem;
-            }
-
-            .search-section {
-                max-width: 300px;
-                margin: 0 1rem;
-            }
-
-            .side-menu {
-                width: 40vw; /* Slightly wider on tablet */
-                right: -40vw;
-            }
-        }
-
-        @media (max-width: 768px) { /* Mobile large */
-            header {
-                padding: 0.75rem 1rem;
-                gap: 0.5rem; /* Less gap overall */
-            }
-
-            .left-section {
-                gap: 0.5rem;
-            }
-
-            .search-section {
-                margin: 0 0.5rem;
-                min-width: 120px; /* Smaller min */
-                flex: 0 1 auto; /* Allow shrink */
-            }
-
-            .search-input {
-                padding: 0.5rem 0.75rem;
-                font-size: 0.9rem;
-            }
-
-            .right-section {
-                gap: 0.5rem;
-            }
-
-            .toggle-btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.9rem;
-            }
-
-            .profile-btn, .notification-btn, .subscription-btn, .menu-btn {
-                width: 35px;
-                height: 35px;
-            }
-
-            .subscription-btn {
-                width: 25px;
-                height: 25px;
-            }
-
-            .side-menu {
-                width: 33.33vw; /* 1/3 on mobile too */
-                right: -33.33vw;
-                padding: 1.5rem;
-            }
-
-            .menu-item {
-                font-size: 1rem;
-                min-height: 45px; /* Slightly smaller */
-            }
-        }
-
-        @media (max-width: 480px) { /* Small mobile */
-            header {
-                padding: 0.5rem 0.5rem;
-                overflow-x: auto; /* Horizontal scroll if needed, but try to fit */
-                justify-content: flex-start; /* Left align if overflow */
-            }
-
-            .left-section {
-                gap: 0.25rem;
-            }
-
-            .search-section {
-                margin: 0 0.25rem;
-                min-width: 100px;
-            }
-
-            .search-input {
-                padding: 0.4rem 0.5rem;
-                font-size: 0.8rem;
-            }
-
-            .right-section {
-                gap: 0.25rem;
-            }
-
-            .toggle-btn {
-                padding: 0.4rem 0.75rem;
-                font-size: 0.8rem;
-            }
-
-            .profile-btn, .notification-btn, .menu-btn {
-                width: 30px;
-                height: 30px;
-            }
-
-            .subscription-btn {
-                width: 20px;
-                height: 20px;
-            }
-
-            .side-menu {
-                width: 66.66vw; /* Wider on very small for usability */
-                right: -66.66vw;
-                padding: 1rem;
-            }
-
-            .menu-item {
-                justify-content: center; /* Center text on small */
-                text-align: center;
-            }
+        .menu-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary-blue);
+            border-radius: 0 2px 2px 0;
         }
 
         /* Main Content */
@@ -407,32 +336,256 @@
             padding: 2rem;
             position: relative;
             z-index: 1;
-            transition: filter var(--transition);
+        }
+
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content-card h1 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .content-card p {
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .mode-indicator {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .mode-indicator.song {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .mode-indicator.podcast {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        /* Mobile Search */
+        .mobile-search-btn {
+            display: none;
+        }
+
+        .mobile-search-container {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--card-bg);
+            align-items: center;
+            padding: 0 1rem;
+            z-index: 1002;
+        }
+
+        .mobile-search-container.active {
+            display: flex;
+        }
+
+        .mobile-search-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .mobile-search-close {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            margin-left: 1rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .mobile-search-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+            
+            .search-section {
+                max-width: 400px;
+                margin: 0 1.5rem;
+            }
         }
 
         @media (max-width: 768px) {
+            header {
+                padding: 0.75rem 1rem;
+            }
+            
+            .search-section {
+                display: none;
+            }
+            
+            .mobile-search-btn {
+                display: flex;
+            }
+            
+            .toggle-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .side-menu {
+                max-width: 320px;
+                padding: 1.5rem;
+            }
+            
             main {
                 padding: 1rem;
+            }
+            
+            .content-card {
+                padding: 1.5rem;
+            }
+            
+            .content-card h1 {
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 0.5rem;
+            }
+            
+            .left-section, .right-section {
+                gap: 0.5rem;
+            }
+            
+            .profile-btn, .icon-btn {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .toggle-container {
+                padding: 2px;
+            }
+            
+            .toggle-btn {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.8rem;
+            }
+            
+            .side-menu {
+                max-width: 280px;
+                padding: 1rem;
+            }
+            
+            .menu-item {
+                padding: 0.75rem 1rem;
+                font-size: 0.95rem;
+            }
+            
+            .content-card {
+                padding: 1rem;
+            }
+            
+            .content-card h1 {
+                font-size: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
+    <div class="overlay" id="overlay"></div>
+    
     <header id="header">
         <div class="left-section">
-            <button class="profile-btn" onclick="openProfile()"></button>
-            <button class="notification-btn" onclick="showNotification()"></button>
-            <button class="subscription-btn" onclick="openSubscription()"></button>
+            <button class="profile-btn" onclick="openProfile()">
+                <i class="fas fa-user"></i>
+            </button>
+            <button class="icon-btn notification-btn" onclick="showNotification()">
+                <i class="fas fa-bell"></i>
+            </button>
+            <button class="icon-btn" onclick="openSubscription()">
+                <i class="fas fa-gem"></i>
+            </button>
+            <button class="icon-btn mobile-search-btn" onclick="toggleMobileSearch()">
+                <i class="fas fa-search"></i>
+            </button>
         </div>
 
         <div class="search-section">
-            <input type="text" class="search-input" placeholder="Search...">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search for songs, podcasts...">
+            </div>
+        </div>
+
+        <div class="mobile-search-container" id="mobileSearch">
+            <input type="text" class="mobile-search-input" placeholder="Search...">
+            <button class="mobile-search-close" onclick="toggleMobileSearch()">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
 
         <div class="right-section">
-            <button class="toggle-btn active" id="songBtn" onclick="toggleMode('song')">Song</button>
-            <button class="toggle-btn podcast" id="podcastBtn" onclick="toggleMode('podcast')">Podcast</button>
-            <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+            <div class="toggle-container">
+                <button class="toggle-btn active" id="songBtn" onclick="toggleMode('song')">Song</button>
+                <button class="toggle-btn podcast" id="podcastBtn" onclick="toggleMode('podcast')">Podcast</button>
+            </div>
+            <button class="icon-btn menu-btn" id="menuBtn" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -441,25 +594,51 @@
     </header>
 
     <div class="side-menu" id="sideMenu">
-        <button class="close-btn" onclick="toggleMenu()">&times;</button>
-        <a href="#" class="menu-item active" id="homeItem" onclick="setActive('home'); goHome();">Home</a>
-        <a href="#" class="menu-item" id="profileItem" onclick="setActive('profile'); openProfile();">Profile</a>
-        <a href="#" class="menu-item" id="subscriptionItem" onclick="setActive('subscription'); openSubscription();">Purchase Subscription</a>
+        <div class="menu-header">
+            <h2 class="menu-title">Menu</h2>
+            <button class="close-btn" onclick="toggleMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <a href="#" class="menu-item active" id="homeItem" onclick="setActive('home'); goHome();">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <a href="#" class="menu-item" id="profileItem" onclick="setActive('profile'); openProfile();">
+            <i class="fas fa-user"></i> Profile
+        </a>
+        <a href="#" class="menu-item" id="libraryItem" onclick="setActive('library'); openLibrary();">
+            <i class="fas fa-music"></i> My Library
+        </a>
+        <a href="#" class="menu-item" id="favoritesItem" onclick="setActive('favorites'); openFavorites();">
+            <i class="fas fa-heart"></i> Favorites
+        </a>
+        <a href="#" class="menu-item" id="subscriptionItem" onclick="setActive('subscription'); openSubscription();">
+            <i class="fas fa-gem"></i> Premium Subscription
+        </a>
+        <a href="#" class="menu-item" id="settingsItem" onclick="setActive('settings'); openSettings();">
+            <i class="fas fa-cog"></i> Settings
+        </a>
     </div>
 
     <main id="mainContent">
-        <h1>Welcome to the Song Page (Default)</h1>
-        <p>This is a placeholder for your content. Default mode: Song (red active).</p>
+        <div class="content-card">
+            <div class="mode-indicator song" id="modeIndicator">Song Mode</div>
+            <h1 id="contentTitle">Welcome to the Song Page</h1>
+            <p id="contentDescription">This is a modern, responsive music and podcast application with a sleek dark theme. Switch between song and podcast modes using the toggle buttons in the header.</p>
+            <p>Explore the menu to access your profile, library, favorites, and subscription options. The interface is fully responsive and works seamlessly on all device sizes.</p>
+        </div>
     </main>
 
     <script>
-        // Default: Song active and Home active in menu
+        // Initialize with Song mode active and Home active in menu
         document.getElementById('songBtn').classList.add('active');
         document.getElementById('homeItem').classList.add('active');
 
         function setActive(menuId) {
             // Remove active from all menu items
-            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
             // Add active to selected
             document.getElementById(menuId + 'Item').classList.add('active');
         }
@@ -467,44 +646,75 @@
         function toggleMode(mode) {
             const songBtn = document.getElementById('songBtn');
             const podcastBtn = document.getElementById('podcastBtn');
-            const mainContent = document.getElementById('mainContent');
+            const contentTitle = document.getElementById('contentTitle');
+            const contentDescription = document.getElementById('contentDescription');
+            const modeIndicator = document.getElementById('modeIndicator');
 
-            // Reset both
+            // Reset both buttons
             songBtn.classList.remove('active');
             podcastBtn.classList.remove('active');
 
-            // Activate selected
+            // Activate selected mode
             if (mode === 'song') {
                 songBtn.classList.add('active');
-                mainContent.querySelector('h1').textContent = 'Welcome to the Song Page';
+                contentTitle.textContent = 'Welcome to the Song Page';
+                contentDescription.textContent = 'This is a modern, responsive music application with a sleek dark theme. Browse your favorite songs, create playlists, and discover new music.';
+                modeIndicator.textContent = 'Song Mode';
+                modeIndicator.className = 'mode-indicator song';
             } else {
                 podcastBtn.classList.add('active');
-                mainContent.querySelector('h1').textContent = 'Welcome to the Podcast Page';
+                contentTitle.textContent = 'Welcome to the Podcast Page';
+                contentDescription.textContent = 'This is a modern, responsive podcast application with a sleek dark theme. Discover new podcasts, subscribe to your favorites, and listen to episodes on the go.';
+                modeIndicator.textContent = 'Podcast Mode';
+                modeIndicator.className = 'mode-indicator podcast';
             }
         }
 
         function toggleMenu() {
             const menu = document.getElementById('sideMenu');
-            const header = document.getElementById('header');
-            const mainContent = document.getElementById('mainContent');
+            const overlay = document.getElementById('overlay');
             const btn = document.getElementById('menuBtn');
 
             menu.classList.toggle('open');
-            header.classList.toggle('menu-open'); // Blur header
-            mainContent.classList.toggle('menu-open'); // Blur main
-            btn.classList.toggle('menu-open'); // Animate hamburger
+            overlay.classList.toggle('active');
+            btn.classList.toggle('menu-open');
+            
+            // Prevent body scroll when menu is open
+            document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+        }
+
+        function toggleMobileSearch() {
+            const mobileSearch = document.getElementById('mobileSearch');
+            mobileSearch.classList.toggle('active');
         }
 
         function openProfile() {
             alert('Opening Profile Page');
+            toggleMenu();
         }
 
         function showNotification() {
-            alert('New content added! Check notifications.');
+            alert('You have 3 new notifications!');
         }
 
         function openSubscription() {
-            alert('Opening Subscription Purchase Page');
+            alert('Opening Premium Subscription Page');
+            toggleMenu();
+        }
+
+        function openLibrary() {
+            alert('Opening Your Library');
+            toggleMenu();
+        }
+
+        function openFavorites() {
+            alert('Opening Your Favorites');
+            toggleMenu();
+        }
+
+        function openSettings() {
+            alert('Opening Settings');
+            toggleMenu();
         }
 
         function goHome() {
@@ -512,12 +722,18 @@
             toggleMenu();
         }
 
-        // Close menu on outside click
-        document.addEventListener('click', (e) => {
-            const menu = document.getElementById('sideMenu');
-            const btn = document.getElementById('menuBtn');
-            if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
-                toggleMenu();
+        // Close menu when clicking on overlay
+        document.getElementById('overlay').addEventListener('click', () => {
+            toggleMenu();
+        });
+
+        // Close mobile search when pressing Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const mobileSearch = document.getElementById('mobileSearch');
+                if (mobileSearch.classList.contains('active')) {
+                    toggleMobileSearch();
+                }
             }
         });
     </script>
