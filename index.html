@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modern Dark Site Header</title>
     <style>
-        /* Enhanced Dark Theme with Better Responsive Design */
+        /* Enhanced Dark Theme with Fixed Menu Panel */
         :root {
             --primary-red: #ef4444;
             --primary-blue: #3b82f6;
-            --bg-color: #0f0f0f; /* Deep dark for immersive dark theme */
-            --card-bg: rgba(15, 15, 15, 0.8); /* Darker glassmorphism */
+            --bg-color: #0f0f0f; /* Deep dark */
+            --card-bg: rgba(15, 15, 15, 0.95); /* Darker, more opaque for panel */
             --text-color: #ffffff;
-            --border-color: rgba(255, 255, 255, 0.1); /* Subtler borders */
+            --border-color: rgba(255, 255, 255, 0.1);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -29,10 +29,11 @@
             min-height: 100vh;
             transition: filter var(--transition);
             color: var(--text-color);
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
 
         body.menu-open {
-            filter: blur(4px); /* Blur only when menu is open */
+            filter: blur(4px); /* Blur background when menu open */
         }
 
         header {
@@ -196,26 +197,28 @@
             transform: rotate(-45deg) translate(7px, -6px);
         }
 
-        /* Side Menu: Slide from right to left (entering from right) */
+        /* Side Menu Panel: Dark, Slide from right to left up to middle (50%) */
         .side-menu {
             position: fixed;
             top: 0;
-            right: -33.33vw; /* Start off-screen right */
-            width: 33.33vw; /* 1/3 width */
+            right: -50vw; /* Start off-screen right */
+            width: 50vw; /* Up to middle of screen */
             height: 100vh;
-            background: var(--card-bg);
+            background: var(--card-bg); /* Dark panel */
             backdrop-filter: blur(20px);
             border-left: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            transition: right var(--transition); /* Smooth slide animation */
+            justify-content: flex-start;
+            transition: right var(--transition); /* Smooth slide from right to left */
             z-index: 1001;
             padding: 2rem;
-            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7); /* Stronger shadow for panel */
+            overflow-y: auto; /* Scroll if needed */
         }
 
         .side-menu.open {
-            right: 0; /* Slide to visible */
+            right: 0; /* Slide in to visible (up to middle) */
         }
 
         .close-btn {
@@ -227,6 +230,7 @@
             cursor: pointer;
             margin-bottom: 2rem;
             transition: var(--transition);
+            padding: 0.5rem;
         }
 
         .close-btn:hover {
@@ -236,22 +240,24 @@
 
         .menu-item {
             display: block;
-            padding: 1rem;
+            padding: 1rem 1.5rem;
             color: var(--text-color);
             text-decoration: none;
             border-radius: 8px;
             transition: var(--transition);
             margin-bottom: 1rem;
-            text-align: center;
+            text-align: left;
             font-size: 1.1rem;
+            border: 1px solid transparent;
         }
 
         .menu-item:hover {
             background: rgba(255, 255, 255, 0.1);
+            border-color: var(--border-color);
             transform: translateX(-5px);
         }
 
-        /* Enhanced Responsive: Better mobile layout */
+        /* Enhanced Responsive */
         @media (max-width: 768px) {
             header {
                 padding: 1rem;
@@ -264,8 +270,8 @@
 
             .search-section {
                 margin: 0 1rem;
-                max-width: 150px; /* Smaller on mobile */
-                order: 3; /* Move search to center-ish */
+                max-width: 150px;
+                order: 3;
                 width: 100%;
             }
 
@@ -280,18 +286,22 @@
             }
 
             .side-menu {
-                width: 100vw; /* Full width on mobile */
-                right: -100vw;
+                width: 80vw; /* Wider on tablet/mobile, up to middle-ish */
+                right: -80vw;
             }
 
             .side-menu.open {
                 right: 0;
             }
 
-            /* Hide search on very small screens if needed, or make it icon-based */
             @media (max-width: 480px) {
                 .search-section {
-                    display: none; /* Optional: Hide search on tiny screens */
+                    display: none; /* Hide search on small screens */
+                }
+
+                .side-menu {
+                    width: 100vw; /* Full on mobile */
+                    right: -100vw;
                 }
 
                 .right-section {
@@ -301,14 +311,17 @@
             }
         }
 
-        /* Main Content: No blur except when menu open */
+        /* Main Content */
         main {
             padding: 2rem;
             transition: filter var(--transition);
+            position: relative;
+            z-index: 1;
         }
 
-        main.menu-open {
-            filter: blur(4px); /* Only blur main when menu open */
+        /* Blur only applies via body.menu-open, but ensure main inherits */
+        body.menu-open main {
+            filter: blur(4px);
         }
     </style>
 </head>
@@ -356,7 +369,7 @@
             const podcastBtn = document.getElementById('podcastBtn');
             const mainContent = document.getElementById('mainContent');
 
-            // Reset both buttons
+            // Reset both
             songBtn.classList.remove('active');
             podcastBtn.classList.remove('active');
 
@@ -368,43 +381,36 @@
                 podcastBtn.classList.add('active');
                 mainContent.querySelector('h1').textContent = 'Welcome to the Podcast Page';
             }
-            // No blur here – only in menu toggle
         }
 
         function toggleMenu() {
             const menu = document.getElementById('sideMenu');
             const body = document.body;
-            const mainContent = document.getElementById('mainContent');
             const btn = document.getElementById('menuBtn');
 
-            // Toggle classes only for menu
             menu.classList.toggle('open');
             body.classList.toggle('menu-open');
-            mainContent.classList.toggle('menu-open'); // Blur only main
             btn.classList.toggle('menu-open');
         }
 
         function openProfile() {
             alert('Opening Profile Page');
-            // No blur – just alert for demo
         }
 
         function showNotification() {
             alert('New content added! Check notifications.');
-            // No blur
         }
 
         function openSubscription() {
             alert('Opening Subscription Purchase Page');
-            // No blur
         }
 
         function goHome() {
-            toggleMode('song'); // Default to song
-            toggleMenu(); // Close menu
+            toggleMode('song');
+            toggleMenu();
         }
 
-        // Close menu on outside click (but not on buttons)
+        // Close menu on outside click
         document.addEventListener('click', (e) => {
             const menu = document.getElementById('sideMenu');
             const btn = document.getElementById('menuBtn');
