@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Site Header</title>
+    <title>Modern Dark Site Header</title>
     <style>
-        /* Modern CSS: Using CSS Grid/Flexbox, Variables, Glassmorphism, Smooth Animations */
+        /* Enhanced Dark Theme with Better Responsive Design */
         :root {
             --primary-red: #ef4444;
             --primary-blue: #3b82f6;
-            --bg-color: #0f0f0f; /* Dark theme for modern feel */
-            --card-bg: rgba(255, 255, 255, 0.1);
+            --bg-color: #0f0f0f; /* Deep dark for immersive dark theme */
+            --card-bg: rgba(15, 15, 15, 0.8); /* Darker glassmorphism */
             --text-color: #ffffff;
-            --border-color: rgba(255, 255, 255, 0.2);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+            --border-color: rgba(255, 255, 255, 0.1); /* Subtler borders */
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -25,13 +25,14 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* Dark gradient */
             min-height: 100vh;
             transition: filter var(--transition);
+            color: var(--text-color);
         }
 
         body.menu-open {
-            filter: blur(4px);
+            filter: blur(4px); /* Blur only when menu is open */
         }
 
         header {
@@ -86,7 +87,7 @@
         }
 
         .notification-btn:hover, .subscription-btn:hover, .menu-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             transform: scale(1.05);
         }
 
@@ -195,26 +196,26 @@
             transform: rotate(-45deg) translate(7px, -6px);
         }
 
-        /* Side Menu */
+        /* Side Menu: Slide from right to left (entering from right) */
         .side-menu {
             position: fixed;
             top: 0;
-            right: -33.33vw; /* 1/3 of viewport */
-            width: 33.33vw;
+            right: -33.33vw; /* Start off-screen right */
+            width: 33.33vw; /* 1/3 width */
             height: 100vh;
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             border-left: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            transition: right var(--transition);
+            transition: right var(--transition); /* Smooth slide animation */
             z-index: 1001;
             padding: 2rem;
             box-shadow: -5px 0 20px rgba(0, 0, 0, 0.5);
         }
 
         .side-menu.open {
-            right: 0;
+            right: 0; /* Slide to visible */
         }
 
         .close-btn {
@@ -250,10 +251,36 @@
             transform: translateX(-5px);
         }
 
-        /* Responsive */
+        /* Enhanced Responsive: Better mobile layout */
         @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .left-section {
+                gap: 0.5rem;
+            }
+
+            .search-section {
+                margin: 0 1rem;
+                max-width: 150px; /* Smaller on mobile */
+                order: 3; /* Move search to center-ish */
+                width: 100%;
+            }
+
+            .right-section {
+                gap: 0.5rem;
+                order: 4;
+            }
+
+            .toggle-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
             .side-menu {
-                width: 100vw;
+                width: 100vw; /* Full width on mobile */
                 right: -100vw;
             }
 
@@ -261,25 +288,27 @@
                 right: 0;
             }
 
-            header {
-                padding: 1rem;
-            }
+            /* Hide search on very small screens if needed, or make it icon-based */
+            @media (max-width: 480px) {
+                .search-section {
+                    display: none; /* Optional: Hide search on tiny screens */
+                }
 
-            .search-section {
-                margin: 0 1rem;
-                max-width: 200px;
+                .right-section {
+                    justify-content: flex-end;
+                    flex: 1;
+                }
             }
         }
 
-        /* Main Content Placeholder */
+        /* Main Content: No blur except when menu open */
         main {
             padding: 2rem;
-            color: var(--text-color);
             transition: filter var(--transition);
         }
 
         main.menu-open {
-            filter: blur(4px);
+            filter: blur(4px); /* Only blur main when menu open */
         }
     </style>
 </head>
@@ -313,7 +342,7 @@
         <a href="#" class="menu-item" onclick="openSubscription()">Purchase Subscription</a>
     </div>
 
-    <main>
+    <main id="mainContent">
         <h1>Welcome to the Song Page (Default)</h1>
         <p>This is a placeholder for your content. Default mode: Song (red active).</p>
     </main>
@@ -325,53 +354,61 @@
         function toggleMode(mode) {
             const songBtn = document.getElementById('songBtn');
             const podcastBtn = document.getElementById('podcastBtn');
+            const mainContent = document.getElementById('mainContent');
 
-            // Reset both
+            // Reset both buttons
             songBtn.classList.remove('active');
             podcastBtn.classList.remove('active');
 
             // Activate selected
             if (mode === 'song') {
                 songBtn.classList.add('active');
-                document.querySelector('main h1').textContent = 'Welcome to the Song Page';
+                mainContent.querySelector('h1').textContent = 'Welcome to the Song Page';
             } else {
-                podcastBtn.classList.add('active', 'podcast'); // 'podcast' class for blue bg
-                document.querySelector('main h1').textContent = 'Welcome to the Podcast Page';
+                podcastBtn.classList.add('active');
+                mainContent.querySelector('h1').textContent = 'Welcome to the Podcast Page';
             }
+            // No blur here – only in menu toggle
         }
 
         function toggleMenu() {
             const menu = document.getElementById('sideMenu');
             const body = document.body;
+            const mainContent = document.getElementById('mainContent');
             const btn = document.getElementById('menuBtn');
 
+            // Toggle classes only for menu
             menu.classList.toggle('open');
             body.classList.toggle('menu-open');
+            mainContent.classList.toggle('menu-open'); // Blur only main
             btn.classList.toggle('menu-open');
         }
 
         function openProfile() {
             alert('Opening Profile Page');
+            // No blur – just alert for demo
         }
 
         function showNotification() {
             alert('New content added! Check notifications.');
+            // No blur
         }
 
         function openSubscription() {
             alert('Opening Subscription Purchase Page');
+            // No blur
         }
 
         function goHome() {
             toggleMode('song'); // Default to song
-            toggleMenu();
+            toggleMenu(); // Close menu
         }
 
-        // Close menu on outside click
+        // Close menu on outside click (but not on buttons)
         document.addEventListener('click', (e) => {
             const menu = document.getElementById('sideMenu');
             const btn = document.getElementById('menuBtn');
-            if (!menu.contains(e.target) && !btn.contains(e.target)) {
+            if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
                 toggleMenu();
             }
         });
