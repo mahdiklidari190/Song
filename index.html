@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modern Dark Site Header</title>
     <style>
-        /* Enhanced Dark Theme with Fixed Menu Panel */
+        /* Enhanced Dark Theme with Targeted Blur */
         :root {
             --primary-red: #ef4444;
             --primary-blue: #3b82f6;
@@ -27,13 +27,14 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* Dark gradient */
             min-height: 100vh;
-            transition: filter var(--transition);
             color: var(--text-color);
             overflow-x: hidden; /* Prevent horizontal scroll */
         }
 
-        body.menu-open {
-            filter: blur(4px); /* Blur background when menu open */
+        /* No blur on body - target specific elements */
+        header.menu-open, main.menu-open {
+            filter: blur(4px); /* Blur only header and main behind the panel */
+            transition: filter var(--transition);
         }
 
         header {
@@ -48,6 +49,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            transition: filter var(--transition);
         }
 
         .left-section {
@@ -197,7 +199,7 @@
             transform: rotate(-45deg) translate(7px, -6px);
         }
 
-        /* Side Menu Panel: Dark, Slide from right to left up to middle (50%) */
+        /* Side Menu Panel: No blur on panel itself */
         .side-menu {
             position: fixed;
             top: 0;
@@ -286,7 +288,7 @@
             }
 
             .side-menu {
-                width: 80vw; /* Wider on tablet/mobile, up to middle-ish */
+                width: 80vw; /* Wider on tablet/mobile */
                 right: -80vw;
             }
 
@@ -314,19 +316,14 @@
         /* Main Content */
         main {
             padding: 2rem;
-            transition: filter var(--transition);
             position: relative;
             z-index: 1;
-        }
-
-        /* Blur only applies via body.menu-open, but ensure main inherits */
-        body.menu-open main {
-            filter: blur(4px);
+            transition: filter var(--transition);
         }
     </style>
 </head>
 <body>
-    <header>
+    <header id="header">
         <div class="left-section">
             <button class="profile-btn" onclick="openProfile()"></button>
             <button class="notification-btn" onclick="showNotification()"></button>
@@ -385,12 +382,14 @@
 
         function toggleMenu() {
             const menu = document.getElementById('sideMenu');
-            const body = document.body;
+            const header = document.getElementById('header');
+            const mainContent = document.getElementById('mainContent');
             const btn = document.getElementById('menuBtn');
 
             menu.classList.toggle('open');
-            body.classList.toggle('menu-open');
-            btn.classList.toggle('menu-open');
+            header.classList.toggle('menu-open'); // Blur header
+            mainContent.classList.toggle('menu-open'); // Blur main
+            btn.classList.toggle('menu-open'); // Animate hamburger
         }
 
         function openProfile() {
