@@ -204,8 +204,8 @@
         .side-menu {
             position: fixed;
             top: 0;
-            right: -50vw; /* Start off-screen right */
-            width: 50vw; /* Up to middle of screen */
+            right: -33.33vw; /* Start off-screen right, 1/3 width */
+            width: 33.33vw; /* 1/3 width for desktop */
             height: 100vh;
             background: var(--card-bg); /* Dark panel */
             backdrop-filter: blur(20px);
@@ -221,11 +221,11 @@
         }
 
         .side-menu.open {
-            right: 0; /* Slide in to visible (up to middle) */
+            right: 0; /* Slide in to visible (1/3) */
         }
 
         .close-btn {
-            align-self: flex-end;
+            align-self: flex-start; /* Align to left side of panel */
             background: none;
             border: none;
             color: var(--text-color);
@@ -273,62 +273,95 @@
             box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); /* Glow effect behind button */
         }
 
-        /* Enhanced Responsive */
-        @media (max-width: 768px) {
+        /* Enhanced Responsive: Better for mobile and desktop */
+        @media (max-width: 1024px) { /* Tablet */
             header {
-                padding: 1rem;
-                flex-wrap: wrap;
-            }
-
-            .left-section {
-                gap: 0.5rem;
+                padding: 1rem 1.5rem;
             }
 
             .search-section {
+                max-width: 300px;
                 margin: 0 1rem;
-                max-width: 150px;
-                order: 3;
-                width: 100%;
+            }
+
+            .side-menu {
+                width: 40vw; /* Slightly wider on tablet */
+                right: -40vw;
+            }
+        }
+
+        @media (max-width: 768px) { /* Mobile large */
+            header {
+                padding: 1rem;
+                flex-direction: column; /* Stack vertically for better mobile */
+                align-items: stretch;
+            }
+
+            .left-section {
+                justify-content: center;
+                gap: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .search-section {
+                margin: 0 0 0.5rem 0;
+                max-width: none;
+                order: 1; /* Search first in stack */
             }
 
             .right-section {
+                justify-content: center;
                 gap: 0.5rem;
-                order: 4;
+                order: 2;
             }
 
             .toggle-btn {
                 padding: 0.5rem 1rem;
                 font-size: 0.9rem;
+                flex: 1; /* Equal width */
             }
 
             .side-menu {
-                width: 80vw; /* Wider on tablet/mobile */
-                right: -80vw;
+                width: 33.33vw; /* 1/3 on mobile too */
+                right: -33.33vw;
+                padding: 1.5rem;
             }
 
-            .side-menu.open {
-                right: 0;
+            .menu-item {
+                font-size: 1rem;
+                min-height: 45px; /* Slightly smaller */
+            }
+        }
+
+        @media (max-width: 480px) { /* Small mobile */
+            .left-section {
+                gap: 0.25rem;
             }
 
-            @media (max-width: 480px) {
-                .search-section {
-                    display: none; /* Hide search on small screens */
-                }
+            .profile-btn, .notification-btn, .subscription-btn, .menu-btn {
+                width: 35px;
+                height: 35px;
+            }
 
-                .side-menu {
-                    width: 100vw; /* Full on mobile */
-                    right: -100vw;
-                }
+            .search-input {
+                font-size: 0.9rem;
+                padding: 0.5rem 0.75rem;
+            }
 
-                .right-section {
-                    justify-content: flex-end;
-                    flex: 1;
-                }
+            .toggle-btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
 
-                .menu-item {
-                    text-align: center; /* Center on very small screens for better UX */
-                    justify-content: center;
-                }
+            .side-menu {
+                width: 66.66vw; /* Wider on very small for usability, but not full */
+                right: -66.66vw;
+                padding: 1rem;
+            }
+
+            .menu-item {
+                justify-content: center; /* Center text on small */
+                text-align: center;
             }
         }
 
@@ -338,6 +371,12 @@
             position: relative;
             z-index: 1;
             transition: filter var(--transition);
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
