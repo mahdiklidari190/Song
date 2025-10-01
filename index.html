@@ -243,17 +243,22 @@
 
         .menu-item {
             display: block;
-            padding: 1rem 1.5rem;
+            padding: 0.75rem 1rem; /* Smaller padding for compact size */
             color: var(--text-color);
             text-decoration: none;
             border-radius: 12px; /* Rounded rectangle */
             transition: var(--transition);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem; /* Less margin for uniformity */
             text-align: right; /* Align text to right side of panel */
             font-size: 1.1rem;
             border: 1px solid transparent;
             position: relative;
             background: transparent;
+            width: 100%; /* Full width for uniform size */
+            min-height: 50px; /* Uniform height for all buttons */
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Align content to right */
         }
 
         .menu-item:hover {
@@ -322,6 +327,7 @@
 
                 .menu-item {
                     text-align: center; /* Center on very small screens for better UX */
+                    justify-content: center;
                 }
             }
         }
