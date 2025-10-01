@@ -165,7 +165,8 @@
         }
 
         .toggle-btn:focus {
-            outline: none; /* Remove default blue focus outline */
+            outline: none !important; /* Force remove outline */
+            box-shadow: none !important; /* Remove any focus ring/shadow */
         }
 
         .toggle-btn.active {
