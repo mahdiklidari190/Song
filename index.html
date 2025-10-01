@@ -51,6 +51,7 @@
             top: 0;
             z-index: 1000;
             transition: filter var(--transition);
+            flex-wrap: nowrap; /* Keep in one row */
         }
 
         .left-section {
@@ -120,6 +121,7 @@
             max-width: 400px;
             margin: 0 2rem;
             position: relative;
+            min-width: 150px; /* Minimum width for mobile */
         }
 
         .search-input {
@@ -159,6 +161,7 @@
             font-weight: 500;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
+            white-space: nowrap; /* Prevent text wrap */
         }
 
         .toggle-btn.active {
@@ -273,7 +276,7 @@
             box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); /* Glow effect behind button */
         }
 
-        /* Enhanced Responsive: Better for mobile and desktop */
+        /* Enhanced Responsive: Keep row layout, scale down for mobile */
         @media (max-width: 1024px) { /* Tablet */
             header {
                 padding: 1rem 1.5rem;
@@ -292,33 +295,42 @@
 
         @media (max-width: 768px) { /* Mobile large */
             header {
-                padding: 1rem;
-                flex-direction: column; /* Stack vertically for better mobile */
-                align-items: stretch;
+                padding: 0.75rem 1rem;
+                gap: 0.5rem; /* Less gap overall */
             }
 
             .left-section {
-                justify-content: center;
                 gap: 0.5rem;
-                margin-bottom: 0.5rem;
             }
 
             .search-section {
-                margin: 0 0 0.5rem 0;
-                max-width: none;
-                order: 1; /* Search first in stack */
+                margin: 0 0.5rem;
+                min-width: 120px; /* Smaller min */
+                flex: 0 1 auto; /* Allow shrink */
+            }
+
+            .search-input {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
             }
 
             .right-section {
-                justify-content: center;
                 gap: 0.5rem;
-                order: 2;
             }
 
             .toggle-btn {
                 padding: 0.5rem 1rem;
                 font-size: 0.9rem;
-                flex: 1; /* Equal width */
+            }
+
+            .profile-btn, .notification-btn, .subscription-btn, .menu-btn {
+                width: 35px;
+                height: 35px;
+            }
+
+            .subscription-btn {
+                width: 25px;
+                height: 25px;
             }
 
             .side-menu {
@@ -334,27 +346,47 @@
         }
 
         @media (max-width: 480px) { /* Small mobile */
+            header {
+                padding: 0.5rem 0.5rem;
+                overflow-x: auto; /* Horizontal scroll if needed, but try to fit */
+                justify-content: flex-start; /* Left align if overflow */
+            }
+
             .left-section {
                 gap: 0.25rem;
             }
 
-            .profile-btn, .notification-btn, .subscription-btn, .menu-btn {
-                width: 35px;
-                height: 35px;
+            .search-section {
+                margin: 0 0.25rem;
+                min-width: 100px;
             }
 
             .search-input {
-                font-size: 0.9rem;
-                padding: 0.5rem 0.75rem;
-            }
-
-            .toggle-btn {
-                padding: 0.5rem 0.75rem;
+                padding: 0.4rem 0.5rem;
                 font-size: 0.8rem;
             }
 
+            .right-section {
+                gap: 0.25rem;
+            }
+
+            .toggle-btn {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .profile-btn, .notification-btn, .menu-btn {
+                width: 30px;
+                height: 30px;
+            }
+
+            .subscription-btn {
+                width: 20px;
+                height: 20px;
+            }
+
             .side-menu {
-                width: 66.66vw; /* Wider on very small for usability, but not full */
+                width: 66.66vw; /* Wider on very small for usability */
                 right: -66.66vw;
                 padding: 1rem;
             }
