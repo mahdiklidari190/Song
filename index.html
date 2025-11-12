@@ -5,85 +5,128 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>FlxFy — Neon Dark Download</title>
   <style>
+    /* === Base === */
     body {
-      margin:0;
-      height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      background:#0a0a0f;
-      overflow:hidden;
-      font-family:sans-serif;
-      color:#fff;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0a0a0f;
+      overflow: hidden;
+      font-family: "Poppins", sans-serif;
+      color: #fff;
     }
-    /* Aurora background */
+
+    /* === Aurora Background === */
     .aurora {
-      position:fixed; inset:0;
+      position: fixed;
+      inset: 0;
       background:
-        radial-gradient(600px at 20% 20%, rgba(124,92,255,.3), transparent 70%),
-        radial-gradient(600px at 80% 30%, rgba(0,245,255,.25), transparent 70%),
-        radial-gradient(600px at 50% 80%, rgba(255,0,255,.25), transparent 70%);
+        radial-gradient(600px at 20% 20%, rgba(124, 92, 255, 0.3), transparent 70%),
+        radial-gradient(600px at 80% 30%, rgba(0, 245, 255, 0.25), transparent 70%),
+        radial-gradient(600px at 50% 80%, rgba(255, 0, 255, 0.25), transparent 70%);
       filter: blur(40px);
       animation: drift 15s ease-in-out infinite alternate;
-      pointer-events:none;
+      pointer-events: none;
     }
+
     @keyframes drift {
-      from { transform:translate(-20px,-10px) scale(1.02); }
-      to   { transform:translate(20px,10px) scale(1.06); }
+      from { transform: translate(-20px, -10px) scale(1.02); }
+      to { transform: translate(20px, 10px) scale(1.06); }
     }
-    /* Card */
+
+    /* === Card === */
     .card {
-      position:relative;
-      padding:40px;
-      border-radius:20px;
-      background:rgba(20,20,30,.6);
-      backdrop-filter:blur(10px);
-      text-align:center;
-      box-shadow:0 0 30px rgba(124,92,255,.3);
+      position: relative;
+      padding: 40px;
+      border-radius: 20px;
+      background: rgba(20, 20, 30, 0.6);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      box-shadow: 0 0 30px rgba(124, 92, 255, 0.3);
+      overflow: hidden;
     }
+
     .card::before {
-      content:"";
-      position:absolute; inset:-2px;
-      border-radius:22px;
-      background:conic-gradient(from var(--deg,0deg),
-        #ff004c,#ffea00,#00f5ff,#7c5cff,#ff004c);
-      animation:spin 6s linear infinite;
-      -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-      -webkit-mask-composite:xor;
-              mask-composite:exclude;
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 22px;
+      background: conic-gradient(from var(--deg, 0deg),
+        #ff004c, #ffea00, #00f5ff, #7c5cff, #ff004c);
+      animation: spin 6s linear infinite;
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      padding: 2px;
     }
-    @keyframes spin { to { --deg:360deg; } }
-    h1 { margin:0 0 10px; font-size:2rem; }
-    p { margin:0 0 20px; opacity:.8; }
-    /* Button */
+
+    @keyframes spin { to { --deg: 360deg; } }
+
+    h1 { margin: 0 0 10px; font-size: 2rem; }
+    p { margin: 0 0 25px; opacity: 0.8; }
+
+    /* === Button === */
     .btn {
-      display:inline-block;
-      padding:15px 30px;
-      border:none;
-      border-radius:12px;
-      font-size:1.1rem;
-      font-weight:bold;
-      text-transform:uppercase;
-      cursor:pointer;
-      background:linear-gradient(135deg,#7c5cff,#00f5ff,#ff00ff);
-      color:#fff;
-      box-shadow:0 0 20px rgba(124,92,255,.6);
-      position:relative;
-      overflow:hidden;
+      display: inline-block;
+      padding: 15px 35px;
+      border: none;
+      border-radius: 14px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: linear-gradient(135deg, #7c5cff, #00f5ff, #ff00ff);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(124, 92, 255, 0.6);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .btn:hover { transform:scale(1.05); }
+
+    .btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 35px rgba(255, 0, 255, 0.8);
+    }
+
     .btn::after {
-      content:"";
-      position:absolute; inset:0;
-      background:linear-gradient(120deg,rgba(255,255,255,.4),transparent 40%);
-      animation:sweep 3s infinite;
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.4), transparent 40%);
+      animation: sweep 3s infinite;
     }
+
     @keyframes sweep {
-      0%{transform:translateX(-100%);}
-      50%{transform:translateX(100%);}
-      100%{transform:translateX(-100%);}
+      0% { transform: translateX(-100%); }
+      50% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
     }
-    canvas { position:fixed; inset:0; pointer-events:none; }
+
+    /* Pulse Effect */
+    .pulse {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: pulseAnim 0.8s ease-out forwards;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes pulseAnim {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
   </style>
 </head>
 <body>
@@ -91,56 +134,73 @@
   <canvas id="fx"></canvas>
   <div class="card">
     <h1>FlxFy Mobile</h1>
-    <p>Dark neon page with RGB glow and fireworks</p>
-    <button class="btn" id="downloadBtn">Download</button>
+    <p>Dark neon download page with reactive light & particles</p>
+    <a href="https://github.com/mahdiklidari190/Song/raw/refs/heads/main/FlxFy-mobile.apk"
+       download="FlxFy-mobile.apk"
+       class="btn"
+       id="downloadBtn">
+      Download
+    </a>
   </div>
 
   <script>
-    const APK_URL = "https://github.com/mahdiklidari190/Song/raw/refs/heads/main/FlxFy-mobile.apk";
+    // === Fireworks Particles ===
+    const canvas = document.getElementById("fx");
+    const ctx = canvas.getContext("2d");
+    let W, H, particles = [];
+    const colors = ["#ff004c", "#ffea00", "#00f5ff", "#7c5cff", "#ff00ff"];
 
-    async function forceDownload(url, filename="FlxFy-mobile.apk"){
-      const res = await fetch(url);
-      if(!res.ok) throw new Error("Download failed");
-      const blob = await res.blob();
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+    function resize() {
+      W = canvas.width = innerWidth;
+      H = canvas.height = innerHeight;
     }
+    resize();
+    window.onresize = resize;
 
-    // Fireworks
-    const canvas=document.getElementById("fx");
-    const ctx=canvas.getContext("2d");
-    let W,H,particles=[];
-    const colors=["#ff004c","#ffea00","#00f5ff","#7c5cff","#ff00ff"];
-    function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}
-    resize();window.onresize=resize;
-    function spawn(x,y,n=80){
-      for(let i=0;i<n;i++){
-        const a=Math.random()*Math.PI*2,s=2+Math.random()*4;
-        particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:60+Math.random()*30,color:colors[(Math.random()*colors.length)|0]});
+    function spawn(x, y, n = 80) {
+      for (let i = 0; i < n; i++) {
+        const a = Math.random() * Math.PI * 2, s = 2 + Math.random() * 4;
+        particles.push({
+          x, y,
+          vx: Math.cos(a) * s,
+          vy: Math.sin(a) * s,
+          life: 60 + Math.random() * 30,
+          color: colors[(Math.random() * colors.length) | 0]
+        });
       }
     }
-    function step(){
-      ctx.clearRect(0,0,W,H);
-      for(let i=particles.length-1;i>=0;i--){
-        const p=particles[i];
-        p.x+=p.vx;p.y+=p.vy;p.vy+=0.05;p.life--;
-        ctx.fillStyle=p.color;
-        ctx.beginPath();ctx.arc(p.x,p.y,2,0,Math.PI*2);ctx.fill();
-        if(p.life<=0)particles.splice(i,1);
+
+    function step() {
+      ctx.clearRect(0, 0, W, H);
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.life--;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+        ctx.fill();
+        if (p.life <= 0) particles.splice(i, 1);
       }
       requestAnimationFrame(step);
     }
     step();
 
-    document.getElementById("downloadBtn").onclick=async()=>{
-      const rect=document.getElementById("downloadBtn").getBoundingClientRect();
-      spawn(rect.left+rect.width/2,rect.top+rect.height/2,120);
-      try{await forceDownload(APK_URL);}catch(e){alert("Download failed");}
-    };
+    // === Pulse Effect on Button ===
+    const btn = document.getElementById("downloadBtn");
+    btn.addEventListener("click", (e) => {
+      const rect = btn.getBoundingClientRect();
+      const pulse = document.createElement("span");
+      pulse.className = "pulse";
+      pulse.style.left = e.clientX - rect.left + "px";
+      pulse.style.top = e.clientY - rect.top + "px";
+      pulse.style.width = pulse.style.height = rect.width + "px";
+      pulse.style.background = "radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%)";
+      btn.appendChild(pulse);
+      setTimeout(() => pulse.remove(), 800);
+
+      // Fireworks burst
+      spawn(rect.left + rect.width / 2, rect.top + rect.height / 2, 120);
+    });
   </script>
 </body>
 </html>
