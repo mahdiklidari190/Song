@@ -1,741 +1,307 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Dark Site Header</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Enhanced Dark Theme with CSS Variables */
-        :root {
-            --primary-red: #ef4444;
-            --primary-blue: #3b82f6;
-            --primary-purple: #8b5cf6;
-            --bg-color: #0f0f0f;
-            --card-bg: rgba(15, 15, 15, 0.95);
-            --text-color: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --active-bg: rgba(59, 130, 246, 0.3);
-            --gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FlxFy — Neon Dark Download</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <style>
+    :root{
+      --bg:#0a0a0f;
+      --fg:#cfcff7;
+      --accent:#7c5cff;
+      --glow1: #00f5ff;
+      --glow2: #ff00ff;
+      --glow3: #ffea00;
+      --btnText:#0b0b10;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 800px at 20% 0%, #121225 0%, #0a0a12 40%, #06060b 100%);
+      color:var(--fg);
+      font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;
+      overflow:hidden;
+    }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--gradient);
-            min-height: 100vh;
-            color: var(--text-color);
-            overflow-x: hidden;
-        }
+    /* Subtle animated moving gradient “aurora” layer */
+    .aurora{
+      position:fixed; inset:0;
+      background:
+        radial-gradient(800px 500px at 15% 10%, rgba(124,92,255,.25), transparent 60%),
+        radial-gradient(700px 400px at 85% 20%, rgba(0,245,255,.20), transparent 60%),
+        radial-gradient(600px 400px at 50% 90%, rgba(255,0,255,.18), transparent 60%);
+      filter: blur(40px) saturate(130%);
+      animation: drift 16s ease-in-out infinite alternate;
+      pointer-events:none;
+    }
+    @keyframes drift {
+      from { transform: translate3d(-20px,-10px,0) scale(1.02); }
+      to   { transform: translate3d(20px,10px,0)  scale(1.06); }
+    }
 
-        /* Header Styles */
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 2rem;
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            transition: var(--transition);
-        }
+    /* Fireworks canvas */
+    canvas#fx{
+      position:fixed; inset:0;
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
 
-        .left-section {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-shrink: 0;
-        }
+    /* Content wrapper */
+    .wrap{
+      position:relative;
+      z-index:5;
+      display:grid;
+      place-items:center;
+      height:100%;
+      text-align:center;
+      padding:24px;
+    }
 
-        .profile-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid var(--border-color);
-            cursor: pointer;
-            transition: var(--transition);
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
+    /* Title */
+    h1{
+      font-weight:700;
+      letter-spacing:.8px;
+      margin:0 0 10px;
+      background: linear-gradient(90deg, #fff, #c8a8ff 30%, #aaf3ff 55%, #ffe680 80%, #fff);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow:
+        0 0 12px rgba(124,92,255,.25),
+        0 0 24px rgba(0,245,255,.15);
+    }
 
-        .profile-btn:hover {
-            transform: scale(1.05);
-            border-color: var(--text-color);
-        }
+    /* Subtitle */
+    p.sub{
+      margin:0 0 28px;
+      opacity:.9;
+      font-weight:300;
+    }
 
-        .icon-btn {
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            background: var(--card-bg);
-            color: var(--text-color);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            border: 1px solid var(--border-color);
-            position: relative;
-        }
+    /* Neon card with RGB perimeter */
+    .card{
+      position:relative;
+      padding:28px 28px 36px;
+      border-radius:22px;
+      background: rgba(12,12,20,.45);
+      backdrop-filter: blur(10px) saturate(120%);
+      box-shadow:
+        0 12px 40px rgba(124,92,255,.15),
+        inset 0 0 60px rgba(124,92,255,.08);
+      overflow:hidden;
+    }
+    /* Animated RGB border */
+    .card::before{
+      content:"";
+      position:absolute; inset:-2px;
+      border-radius:24px;
+      padding:2px;
+      background: conic-gradient(
+        from var(--deg, 0deg),
+        #ff004c, #ffea00, #00f5ff, #7c5cff, #ff004c
+      );
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      animation: spin 6s linear infinite;
+    }
+    @keyframes spin { to { --deg: 360deg; } }
 
-        .icon-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: scale(1.05);
-        }
+    /* Download button */
+    .btn{
+      display:inline-grid;
+      place-items:center;
+      min-width:220px;
+      padding:16px 24px;
+      border-radius:14px;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.6px;
+      color:#fff;
+      background:
+        radial-gradient(120% 180% at 20% 20%, rgba(255,255,255,.15), transparent 40%),
+        linear-gradient(135deg, #7c5cff 0%, #00f5ff 50%, #ff00ff 100%);
+      box-shadow:
+        0 0 16px rgba(124,92,255,.45),
+        0 8px 28px rgba(0,0,0,.6),
+        inset 0 0 24px rgba(255,255,255,.12);
+      border: none;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+      transition: transform .15s ease, filter .2s ease;
+    }
+    .btn:hover{
+      transform: translateY(-2px);
+      filter: brightness(1.08) saturate(1.1);
+    }
+    /* Moving glossy highlight */
+    .btn::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        linear-gradient(120deg, rgba(255,255,255,.35), rgba(255,255,255,0) 30%),
+        radial-gradient(80px 40px at var(--hx, -20%) 50%, rgba(255,255,255,.25), transparent 60%);
+      mix-blend-mode: overlay;
+      pointer-events:none;
+      animation: sweep 2.8s ease-in-out infinite;
+    }
+    @keyframes sweep {
+      0%   { --hx: -20%; }
+      50%  { --hx: 120%; }
+      100% { --hx: -20%; }
+    }
 
-        .notification-btn::after {
-            content: '';
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--primary-red);
-        }
+    /* Small helper text */
+    .hint{
+      margin-top:14px;
+      font-size:.84rem;
+      opacity:.7;
+    }
 
-        /* Search Section */
-        .search-section {
-            flex: 1;
-            max-width: 500px;
-            margin: 0 2rem;
-            position: relative;
-        }
-
-        .search-container {
-            position: relative;
-            width: 100%;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            border: 1px solid var(--border-color);
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-color);
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-
-        .search-input::placeholder {
-            color: var(--text-secondary);
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-        }
-
-        /* Right Section */
-        .right-section {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-shrink: 0;
-        }
-
-        .toggle-container {
-            display: flex;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 25px;
-            padding: 4px;
-            border: 1px solid var(--border-color);
-        }
-
-        .toggle-btn {
-            padding: 0.5rem 1.25rem;
-            border: none;
-            border-radius: 20px;
-            color: var(--text-color);
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 500;
-            background: transparent;
-            white-space: nowrap;
-        }
-
-        .toggle-btn:focus {
-            outline: none;
-        }
-
-        .toggle-btn.active {
-            background: var(--primary-red);
-            box-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
-        }
-
-        .toggle-btn.active.podcast {
-            background: var(--primary-blue);
-            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
-        }
-
-        .toggle-btn:hover:not(.active) {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Menu Button */
-        .menu-btn {
-            flex-direction: column;
-            gap: 4px;
-            border-radius: 6px;
-        }
-
-        .menu-btn span {
-            display: block;
-            width: 20px;
-            height: 2px;
-            background: var(--text-color);
-            transition: var(--transition);
-        }
-
-        .menu-open .menu-btn span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-
-        .menu-open .menu-btn span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .menu-open .menu-btn span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -6px);
-        }
-
-        /* Side Menu */
-        .side-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            max-width: 400px;
-            height: 100vh;
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border-left: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            transition: right var(--transition);
-            z-index: 1001;
-            padding: 2rem;
-            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
-            overflow-y: auto;
-        }
-
-        .side-menu.open {
-            right: 0;
-        }
-
-        .menu-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: var(--transition);
-            padding: 0.5rem;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: rotate(90deg);
-        }
-
-        .menu-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem 1.25rem;
-            color: var(--text-color);
-            text-decoration: none;
-            border-radius: 12px;
-            transition: var(--transition);
-            margin-bottom: 0.5rem;
-            border: 1px solid transparent;
-            position: relative;
-            background: transparent;
-        }
-
-        .menu-item i {
-            margin-right: 12px;
-            font-size: 1.2rem;
-            width: 24px;
-            text-align: center;
-        }
-
-        .menu-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--border-color);
-            transform: translateX(5px);
-        }
-
-        .menu-item.active {
-            background: var(--active-bg);
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
-        }
-
-        .menu-item.active::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 4px;
-            background: var(--primary-blue);
-            border-radius: 0 2px 2px 0;
-        }
-
-        /* Main Content */
-        main {
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .content-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .content-card h1 {
-            margin-bottom: 1rem;
-            font-size: 2rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .content-card p {
-            line-height: 1.6;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .mode-indicator {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-        }
-
-        .mode-indicator.song {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .mode-indicator.podcast {
-            background: rgba(59, 130, 246, 0.2);
-            color: #93c5fd;
-            border: 1px solid rgba(59, 130, 246, 0.3);
-        }
-
-        /* Mobile Search */
-        .mobile-search-btn {
-            display: none;
-        }
-
-        .mobile-search-container {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--card-bg);
-            align-items: center;
-            padding: 0 1rem;
-            z-index: 1002;
-        }
-
-        .mobile-search-container.active {
-            display: flex;
-        }
-
-        .mobile-search-input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-color);
-            font-size: 1rem;
-        }
-
-        .mobile-search-close {
-            background: none;
-            border: none;
-            color: var(--text-color);
-            font-size: 1.5rem;
-            margin-left: 1rem;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: var(--transition);
-        }
-
-        .mobile-search-close:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Overlay */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-        }
-
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            header {
-                padding: 1rem 1.5rem;
-            }
-            
-            .search-section {
-                max-width: 400px;
-                margin: 0 1.5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            header {
-                padding: 0.75rem 1rem;
-            }
-            
-            .search-section {
-                display: none;
-            }
-            
-            .mobile-search-btn {
-                display: flex;
-            }
-            
-            .toggle-btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.9rem;
-            }
-            
-            .side-menu {
-                max-width: 320px;
-                padding: 1.5rem;
-            }
-            
-            main {
-                padding: 1rem;
-            }
-            
-            .content-card {
-                padding: 1.5rem;
-            }
-            
-            .content-card h1 {
-                font-size: 1.75rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            header {
-                padding: 0.5rem;
-            }
-            
-            .left-section, .right-section {
-                gap: 0.5rem;
-            }
-            
-            .profile-btn, .icon-btn {
-                width: 36px;
-                height: 36px;
-            }
-            
-            .toggle-container {
-                padding: 2px;
-            }
-            
-            .toggle-btn {
-                padding: 0.4rem 0.75rem;
-                font-size: 0.8rem;
-            }
-            
-            .side-menu {
-                max-width: 280px;
-                padding: 1rem;
-            }
-            
-            .menu-item {
-                padding: 0.75rem 1rem;
-                font-size: 0.95rem;
-            }
-            
-            .content-card {
-                padding: 1rem;
-            }
-            
-            .content-card h1 {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+    /* Footer note */
+    .footer{
+      position:fixed;
+      left:0; right:0; bottom:10px;
+      text-align:center;
+      font-size:.8rem;
+      opacity:.6;
+    }
+    .footer a{ color:#9fdcff; text-decoration:none }
+    .footer a:hover{ text-decoration:underline }
+  </style>
 </head>
 <body>
-    <div class="overlay" id="overlay"></div>
-    
-    <header id="header">
-        <div class="left-section">
-            <button class="profile-btn" onclick="openProfile()">
-                <i class="fas fa-user"></i>
-            </button>
-            <button class="icon-btn notification-btn" onclick="showNotification()">
-                <i class="fas fa-bell"></i>
-            </button>
-            <button class="icon-btn" onclick="openSubscription()">
-                <i class="fas fa-gem"></i>
-            </button>
-            <button class="icon-btn mobile-search-btn" onclick="toggleMobileSearch()">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
+  <div class="aurora"></div>
+  <canvas id="fx"></canvas>
 
-        <div class="search-section">
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" class="search-input" placeholder="Search for songs, podcasts...">
-            </div>
-        </div>
+  <div class="wrap">
+    <div class="card">
+      <h1>FlxFy Mobile</h1>
+      <p class="sub">Ultra-dark neon page with RGB glow and fireworks — tap to download.</p>
 
-        <div class="mobile-search-container" id="mobileSearch">
-            <input type="text" class="mobile-search-input" placeholder="Search...">
-            <button class="mobile-search-close" onclick="toggleMobileSearch()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-
-        <div class="right-section">
-            <div class="toggle-container">
-                <button class="toggle-btn active" id="songBtn" onclick="toggleMode('song')">Song</button>
-                <button class="toggle-btn podcast" id="podcastBtn" onclick="toggleMode('podcast')">Podcast</button>
-            </div>
-            <button class="icon-btn menu-btn" id="menuBtn" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </header>
-
-    <div class="side-menu" id="sideMenu">
-        <div class="menu-header">
-            <h2 class="menu-title">Menu</h2>
-            <button class="close-btn" onclick="toggleMenu()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <a href="#" class="menu-item active" id="homeItem" onclick="setActive('home'); goHome();">
-            <i class="fas fa-home"></i> Home
-        </a>
-        <a href="#" class="menu-item" id="profileItem" onclick="setActive('profile'); openProfile();">
-            <i class="fas fa-user"></i> Profile
-        </a>
-        <a href="#" class="menu-item" id="libraryItem" onclick="setActive('library'); openLibrary();">
-            <i class="fas fa-music"></i> My Library
-        </a>
-        <a href="#" class="menu-item" id="favoritesItem" onclick="setActive('favorites'); openFavorites();">
-            <i class="fas fa-heart"></i> Favorites
-        </a>
-        <a href="#" class="menu-item" id="subscriptionItem" onclick="setActive('subscription'); openSubscription();">
-            <i class="fas fa-gem"></i> Premium Subscription
-        </a>
-        <a href="#" class="menu-item" id="settingsItem" onclick="setActive('settings'); openSettings();">
-            <i class="fas fa-cog"></i> Settings
-        </a>
+      <button class="btn" id="downloadBtn" aria-label="Download APK">
+        Download
+      </button>
+      <div class="hint">Tap “Download” to get the APK. Fireworks celebrate the click.</div>
     </div>
+  </div>
 
-    <main id="mainContent">
-        <div class="content-card">
-            <div class="mode-indicator song" id="modeIndicator">Song Mode</div>
-            <h1 id="contentTitle">Welcome to the Song Page</h1>
-            <p id="contentDescription">This is a modern, responsive music and podcast application with a sleek dark theme. Switch between song and podcast modes using the toggle buttons in the header.</p>
-            <p>Explore the menu to access your profile, library, favorites, and subscription options. The interface is fully responsive and works seamlessly on all device sizes.</p>
-        </div>
-    </main>
+  <div class="footer">
+    Made with ❤️ neon vibes. <a href="https://github.com/mahdiklidari190/Song" target="_blank" rel="noopener">Project repo</a>
+  </div>
 
-    <script>
-        // Initialize with Song mode active and Home active in menu
-        document.getElementById('songBtn').classList.add('active');
-        document.getElementById('homeItem').classList.add('active');
+  <script>
+    // RAW URL of the APK file (GitHub)
+    const APK_URL = "https://github.com/mahdiklidari190/Song/raw/refs/heads/main/FlxFy-mobile.apk";
 
-        function setActive(menuId) {
-            // Remove active from all menu items
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            // Add active to selected
-            document.getElementById(menuId + 'Item').classList.add('active');
-        }
+    // Force-download via Blob for consistent filename and headers
+    async function forceDownload(url, filename = "FlxFy-mobile.apk"){
+      const res = await fetch(url, { mode: "cors" });
+      if(!res.ok) throw new Error("Failed to fetch file.");
+      const blob = await res.blob();
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        URL.revokeObjectURL(link.href);
+        link.remove();
+      }, 1000);
+    }
 
-        function toggleMode(mode) {
-            const songBtn = document.getElementById('songBtn');
-            const podcastBtn = document.getElementById('podcastBtn');
-            const contentTitle = document.getElementById('contentTitle');
-            const contentDescription = document.getElementById('contentDescription');
-            const modeIndicator = document.getElementById('modeIndicator');
+    // Fireworks effect (simple particle system)
+    const canvas = document.getElementById("fx");
+    const ctx = canvas.getContext("2d");
+    let W, H, particles = [];
+    const colors = ["#ff004c","#ffea00","#00f5ff","#7c5cff","#ff00ff"];
 
-            // Reset both buttons
-            songBtn.classList.remove('active');
-            podcastBtn.classList.remove('active');
+    function resize(){
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
 
-            // Activate selected mode
-            if (mode === 'song') {
-                songBtn.classList.add('active');
-                contentTitle.textContent = 'Welcome to the Song Page';
-                contentDescription.textContent = 'This is a modern, responsive music application with a sleek dark theme. Browse your favorite songs, create playlists, and discover new music.';
-                modeIndicator.textContent = 'Song Mode';
-                modeIndicator.className = 'mode-indicator song';
-            } else {
-                podcastBtn.classList.add('active');
-                contentTitle.textContent = 'Welcome to the Podcast Page';
-                contentDescription.textContent = 'This is a modern, responsive podcast application with a sleek dark theme. Discover new podcasts, subscribe to your favorites, and listen to episodes on the go.';
-                modeIndicator.textContent = 'Podcast Mode';
-                modeIndicator.className = 'mode-indicator podcast';
-            }
-        }
-
-        function toggleMenu() {
-            const menu = document.getElementById('sideMenu');
-            const overlay = document.getElementById('overlay');
-            const btn = document.getElementById('menuBtn');
-
-            menu.classList.toggle('open');
-            overlay.classList.toggle('active');
-            btn.classList.toggle('menu-open');
-            
-            // Prevent body scroll when menu is open
-            document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
-        }
-
-        function toggleMobileSearch() {
-            const mobileSearch = document.getElementById('mobileSearch');
-            mobileSearch.classList.toggle('active');
-        }
-
-        function openProfile() {
-            alert('Opening Profile Page');
-            toggleMenu();
-        }
-
-        function showNotification() {
-            alert('You have 3 new notifications!');
-        }
-
-        function openSubscription() {
-            alert('Opening Premium Subscription Page');
-            toggleMenu();
-        }
-
-        function openLibrary() {
-            alert('Opening Your Library');
-            toggleMenu();
-        }
-
-        function openFavorites() {
-            alert('Opening Your Favorites');
-            toggleMenu();
-        }
-
-        function openSettings() {
-            alert('Opening Settings');
-            toggleMenu();
-        }
-
-        function goHome() {
-            toggleMode('song');
-            toggleMenu();
-        }
-
-        // Close menu when clicking on overlay
-        document.getElementById('overlay').addEventListener('click', () => {
-            toggleMenu();
+    function spawn(x, y, count = 80){
+      for(let i=0;i<count;i++){
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 2 + Math.random() * 4;
+        particles.push({
+          x, y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 60 + Math.random()*30,
+          color: colors[(Math.random()*colors.length)|0],
+          size: 1 + Math.random()*2,
+          glow: 0.6 + Math.random()*0.6
         });
+      }
+    }
 
-        // Close mobile search when pressing Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                const mobileSearch = document.getElementById('mobileSearch');
-                if (mobileSearch.classList.contains('active')) {
-                    toggleMobileSearch();
-                }
-            }
-        });
-    </script>
+    function step(){
+      ctx.clearRect(0,0,W,H);
+      for(let i=particles.length-1;i>=0;i--){
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.03; // gravity
+        p.life--;
+
+        // draw
+        ctx.globalCompositeOperation = "lighter";
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 16 * p.glow);
+        g.addColorStop(0, p.color + "cc");
+        g.addColorStop(1, "#00000000");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * 2.2, 0, Math.PI*2);
+        ctx.fill();
+
+        if(p.life <= 0 || p.x<0 || p.x>W || p.y>H+50){
+          particles.splice(i,1);
+        }
+      }
+      requestAnimationFrame(step);
+    }
+    step();
+
+    // Click to download + fireworks burst at button center
+    const btn = document.getElementById("downloadBtn");
+    btn.addEventListener("click", async (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = rect.left + rect.width/2;
+      const y = rect.top  + rect.height/2;
+      spawn(x, y, 120);
+
+      btn.disabled = true;
+      btn.style.filter = "brightness(1.2) saturate(1.2)";
+      try{
+        await forceDownload(APK_URL, "FlxFy-mobile.apk");
+      }catch(err){
+        console.error(err);
+        alert("Download failed. Please try again or open the repo link below.");
+      }finally{
+        btn.disabled = false;
+        btn.style.filter = "";
+      }
+    });
+
+    // Ambient random fireworks
+    setInterval(() => {
+      const x = Math.random() * W * 0.9 + W*0.05;
+      const y = Math.random() * H * 0.4 + H*0.1;
+      spawn(x, y, 60);
+    }, 2200);
+  </script>
 </body>
 </html>
